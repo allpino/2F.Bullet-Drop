@@ -6,10 +6,15 @@ Group 2F
 
 Group Members:
 
-Ulaş İş
+- Ulaş İş
 
-Alperen Erkek
+- Alperen Erkek
 
-Ömer Faruk Ergün
+- Ömer Faruk Ergün
 
-Abdullah Seçkin Özdil
+- Abdullah Seçkin Özdil
+
+
+## Description 
+
+Bullet Drop is a desktop game which allows a
