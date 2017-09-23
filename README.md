@@ -4,7 +4,7 @@ CS319 Project Bullet Drop
 
 Group 2F
 
-Members:
+Group Members:
 
 Ulaş İş
 
