@@ -5,42 +5,30 @@ import com.company.Screens.MenuScreen;
 import javax.swing.*;
 import java.awt.*;
 
-public class BulletDrop extends JComponent {
-
-    static JFrame window;
-    static JPanel curScreen = null;
+public class BulletDrop extends JFrame {
 
     public static void main(String[] args)
     {
-        window = new JFrame("Bullet Drop v0.1");
-        window.pack();
         BulletDrop bulletDrop = new BulletDrop();
-        window.add(bulletDrop);
-        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
-        window.setSize(new Dimension(Constants.GAME_WIDTH, Constants.GAME_HEIGHT));
-        window.setResizable(false);
-
-        setCurScreen(new MenuScreen());
-
+        bulletDrop.setTitle("Bullet Drop v.01");
+        bulletDrop.pack();
+        bulletDrop.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        bulletDrop.setLocationRelativeTo(null);
+        bulletDrop.setVisible(true);
+        bulletDrop.setResizable(false);
+        bulletDrop.add(new MenuScreen());
+        bulletDrop.revalidate();
     }
-
-    public static void setCurScreen(JPanel screen)
-    {
-        curScreen = screen;
-        window.repaint();
-    }
-
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public Dimension getPreferredSize()
+    {
+        return new Dimension(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+    }
 
-        if (curScreen != null)
-        {
-            curScreen.paintComponents(g);
-        }
-
+    @Override
+    public void paintComponents(Graphics g)
+    {
+        super.paintComponents(g);
     }
 }

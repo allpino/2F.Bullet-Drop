@@ -3,6 +3,7 @@ package com.company.Screens;
 
 import com.company.Constants;
 
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,7 @@ public class MenuScreen extends JPanel
         {
 
         }
+
         if (bq == null)
         {
             throw new IllegalArgumentException("Could not load bq");
@@ -40,13 +42,16 @@ public class MenuScreen extends JPanel
 
         buttonPanel.setLayout(new FlowLayout());
 
-        newGameButton.setSize(600,400);
-        settings.setSize(600,400);
-        exit.setSize(600,400);
-
         newGameButton.setVisible(true);
         settings.setVisible(true);
         exit.setVisible(true);
+
+
+        buttonPanel.add(newGameButton);
+        buttonPanel.add(settings);
+        buttonPanel.add(exit);
+
+        add(buttonPanel);
 
     }
 
@@ -58,13 +63,11 @@ public class MenuScreen extends JPanel
         super.paintComponents(g);
 
         g.drawImage(bq,0,0,null);
+    }
 
-
-        buttonPanel.add(newGameButton);
-        buttonPanel.add(settings);
-        buttonPanel.add(exit);
-
-        add(buttonPanel);
-
+    @Override
+    public Dimension getPreferredSize()
+    {
+        return new Dimension(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
     }
 }
