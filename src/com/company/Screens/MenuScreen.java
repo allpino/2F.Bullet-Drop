@@ -24,7 +24,7 @@ public class MenuScreen extends JPanel
 
         try
         {
-            bq = ImageIO.read(new File("C:\\Users\\AlpiN\\Desktop\\2F.Bullet-Drop\\src\\resources\\menu_bq.png"));
+            bq = ImageIO.read(new File("menu_bq.png"));
         }
         catch (IOException e)
         {
