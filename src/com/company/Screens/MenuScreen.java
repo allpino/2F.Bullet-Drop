@@ -2,72 +2,37 @@ package com.company.Screens;
 
 
 import com.company.Constants;
+import javafx.animation.Animation;
+import javafx.animation.AnimationTimer;
+import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-public class MenuScreen extends JPanel
+public  class MenuScreen extends Group
 {
-    BufferedImage bq = null;
-    JPanel buttonPanel;
 
-    JButton newGameButton = new JButton("New Game");
-    JButton settings = new JButton("Setting");
-    JButton exit = new JButton("Exit");
+    GraphicsContext gc;
+    Image bq;
 
-    public MenuScreen(){
-
-        try
-        {
-            bq = ImageIO.read(new File("menu_bq.png"));
-        }
-        catch (IOException e)
-        {
-
-        }
-
-        if (bq == null)
-        {
-            throw new IllegalArgumentException("Could not load bq");
-        }
-
-        setVisible(true);
-
-        buttonPanel = new JPanel();
-
-        buttonPanel.setLayout(new FlowLayout());
-
-        newGameButton.setVisible(true);
-        settings.setVisible(true);
-        exit.setVisible(true);
-
-
-        buttonPanel.add(newGameButton);
-        buttonPanel.add(settings);
-        buttonPanel.add(exit);
-
-        add(buttonPanel);
-
-    }
-
-
-
-    @Override
-    public void paintComponents(Graphics g)
+    public MenuScreen()
     {
-        super.paintComponents(g);
+        Canvas canvas  = new Canvas(Constants.GAME_WIDTH,Constants.GAME_HEIGHT);
+        gc = canvas.getGraphicsContext2D();
 
-        g.drawImage(bq,0,0,null);
+
+        System.out.println("LOADING FILEEEEE");
+        bq = new Image("C:\\Users\\Elif\\Desktop\\alp\\2F.Bullet-Drop\\src\\resources\\menu_bq.png");
+        System.out.println("FILE LOADED");
+
     }
 
-    @Override
-    public Dimension getPreferredSize()
+    public void Update()
     {
-        return new Dimension(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+        gc.drawImage(bq,0,0);
     }
+
+
+
 }
