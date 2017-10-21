@@ -1,16 +1,14 @@
 package com.company;
-import com.company.Screens.MenuScreen;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class BulletDrop extends Application
 {
+
+    Settings settings;
 
     public static void main(String[] args)
     {
@@ -21,27 +19,32 @@ public class BulletDrop extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        ScreenManager screenManager = new ScreenManager();
-        screenManager.setCurScreen(new MenuScreen());
 
+        //Settings init
+        settings = new Settings();
 
+        //ScreenManager init
+        ScreenManager screenManager = new ScreenManager(settings);
 
         primaryStage.setTitle("Bullet Drop v.01");
 
 
         Scene theScene = new Scene(screenManager.getCurScreen());
+        primaryStage.setScene(theScene);
+
+        primaryStage.show();
 
         new AnimationTimer()
         {
             public void handle(long currentNanoTime)
             {
                 screenManager.Update();
+
+                theScene.setRoot(screenManager.getCurScreen());
+                primaryStage.setScene(theScene);
+
             }
         }.start();
-
-
-        primaryStage.setScene(theScene);
-        primaryStage.show();
 
     }
 

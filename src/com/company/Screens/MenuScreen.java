@@ -1,6 +1,5 @@
 package com.company.Screens;
 
-
 import com.company.Constants;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,11 +8,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 
-public  class MenuScreen extends Group implements Screen
+public class MenuScreen extends Group implements Screen
 {
     private GraphicsContext gc;
     private Image bq;
@@ -30,15 +30,17 @@ public  class MenuScreen extends Group implements Screen
         switchToNewGameScreen = false;
         switchTosettingsScreen = false;
 
-        Canvas canvas  = new Canvas(Constants.GAME_WIDTH,Constants.GAME_HEIGHT);
+        Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
+
+        //LOAD BACKGROUND
         try
         {
             bq = new Image(new FileInputStream("src\\com\\company\\resources\\menu_bq.png"));
-        }catch (FileNotFoundException ex)
+        } catch (FileNotFoundException ex)
         {
-            System.out.println("DUDE WTF HAPPENED LOOL");
+            throw new AssertionError();
         }
 
 
@@ -64,29 +66,33 @@ public  class MenuScreen extends Group implements Screen
         exit.setStyle("-fx-font: 30 arial; -fx-base: #ee2211;");
 
 
-        newGame.setOnAction(new EventHandler<ActionEvent>() {
+        newGame.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 switchToNewGameScreen = true;
             }
         });
 
-        settings.setOnAction(new EventHandler<ActionEvent>() {
+        settings.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 switchTosettingsScreen = true;
             }
         });
 
 
-        exit.setOnAction(new EventHandler<ActionEvent>() {
+        exit.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 Runtime.getRuntime().exit(0);
             }
         });
-
-
 
 
         //ADD TO CANVAS
@@ -99,15 +105,18 @@ public  class MenuScreen extends Group implements Screen
 
     public void Update()
     {
-        gc.drawImage(bq,0,0);
+        gc.drawImage(bq, 0, 0);
     }
 
 
-    public boolean isSwitchToNewGameScreen() {
+    public boolean isSwitchToNewGameScreen()
+    {
         return switchToNewGameScreen;
     }
 
-    public boolean isSwitchTosettingsScreen() {
+    public boolean isSwitchToSettingsScreen()
+    {
         return switchTosettingsScreen;
     }
+
 }
