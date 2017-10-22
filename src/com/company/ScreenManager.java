@@ -1,10 +1,13 @@
 package com.company;
 
-import com.company.Maps.Map1;
+
 import com.company.Screens.MenuScreen;
 import com.company.Screens.Screen;
 import com.company.Screens.SettingsScreen;
+import com.company.Screens.WeaponSelectionScreen;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
+
 
 public class ScreenManager
 {
@@ -15,17 +18,30 @@ public class ScreenManager
     //Screens
     MenuScreen menuScreen;
     SettingsScreen settingsScreen;
+    WeaponSelectionScreen weaponSelectionScreen;
+
+    //Managers
+    MapManager mapManager;
+    WeaponManager weaponManager;
 
 
-    public ScreenManager(Settings settings){
+    public ScreenManager(Settings settings, MapManager mapManager, WeaponManager weaponManager)
+    {
 
-        this.settings = settings;
-        if (settings == null)
-        {
-            throw new AssertionError();
-        }
         menuScreen = new MenuScreen();
         curScreen = menuScreen;
+
+        if (settings == null || mapManager == null || weaponManager == null)
+        {
+            throw new AssertionError("Settings or mapManager or weaponManager you passed is null");
+        }
+        else
+        {
+            this.settings = settings;
+            this.mapManager = mapManager;
+            this.weaponManager = weaponManager;
+        }
+
     }
 
     public void setCurScreen(Group screen)
@@ -51,7 +67,14 @@ public class ScreenManager
             }
             else if(((MenuScreen) curScreen).isSwitchToNewGameScreen())
             {
-                //TODO: switch to new game
+                mapManager.setCurrentMap(1);
+                Image bq = mapManager.getCurrentMap().getBackground();
+
+                weaponSelectionScreen = new WeaponSelectionScreen(bq,weaponManager);
+                setCurScreen(weaponSelectionScreen);
+                menuScreen = null;
+
+
             }
         }
         else if(curScreen instanceof SettingsScreen)

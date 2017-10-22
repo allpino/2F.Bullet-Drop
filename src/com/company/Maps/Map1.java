@@ -7,10 +7,8 @@ import javafx.scene.image.Image;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class Map1
+public class Map1 implements Map
 {
-    final int MAP_WIDTH = 7680;
-
     Image bq;
     Force[] forces;
     int currentLevel;
@@ -33,8 +31,9 @@ public class Map1
         forces = new Force[10];
 
         //Sets the positions of the forces randomly.
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 8; i++)
         {
+            forces[i] = new Force();
             forces[i].setPosition((double) (Constants.GAME_WIDTH + 100 + i*670),(double)(forces[i].isUpwards() ? 0:
                     Constants
                     .GAME_HEIGHT));
@@ -45,8 +44,8 @@ public class Map1
         }
 
         //Set Gravity
-        forces[10] = new Force(mapDifficultyConstant + 20,true);
-        forces[10].setWidthAndHeight(MAP_WIDTH - Constants.GAME_WIDTH,Constants.GAME_HEIGHT); //Gravity will take
+        forces[9] = new Force(mapDifficultyConstant + 20,true);
+        forces[9].setWidthAndHeight(MAP_WIDTH - Constants.GAME_WIDTH,Constants.GAME_HEIGHT); //Gravity will take
         // place after 1 map width circle
     }
 

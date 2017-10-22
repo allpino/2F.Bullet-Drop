@@ -23,8 +23,11 @@ public class BulletDrop extends Application
         //Settings init
         settings = new Settings();
 
-        //ScreenManager init
-        ScreenManager screenManager = new ScreenManager(settings);
+        //Managers init
+        MapManager mapManager = new MapManager();
+        WeaponManager weaponManager = new WeaponManager();
+        ScreenManager screenManager = new ScreenManager(settings,mapManager,weaponManager);
+
 
         primaryStage.setTitle("Bullet Drop v.01");
 

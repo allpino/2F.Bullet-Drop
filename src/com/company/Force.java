@@ -1,7 +1,5 @@
 package com.company;
 
-import com.sun.tools.javac.util.Assert;
-import sun.jvm.hotspot.utilities.AssertionFailure;
 
 public class Force extends Sprite
 {
