@@ -2,5 +2,5 @@ package com.company.Screens;
 
 public interface Screen{
 
-    public void Update();
+    public void Update(double dt);
 }

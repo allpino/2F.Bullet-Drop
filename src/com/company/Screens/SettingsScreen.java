@@ -98,7 +98,7 @@ public class SettingsScreen extends Group implements Screen
         getChildren().add(back);
     }
 
-    public void Update()
+    public void Update(double dt)
     {
         gc.drawImage(bq, 0, 0);
     }

@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -30,6 +31,7 @@ public class WeaponSelectionScreen extends Group implements Screen
     private Button nextWeapon;
     private Button previousWeapon;
     private Button selectWeapon;
+    private Button back;
 
     private boolean switchToMainMenuScreen;
     private boolean switchToWeaponPlacementScreen;
@@ -90,6 +92,22 @@ public class WeaponSelectionScreen extends Group implements Screen
         previousWeapon.setPrefWidth(150);
         previousWeapon.setStyle("-fx-font: 25 arial; -fx-base: #ee2211;");
 
+        selectWeapon = new Button("Select!");
+        selectWeapon.setTranslateX(560);
+        selectWeapon.setTranslateY(350);
+        selectWeapon.setShape(new Circle(70));
+        selectWeapon.setMinSize(140.0,140.0);
+        selectWeapon.setMaxSize(140.0,140.0);
+        selectWeapon.setStyle("-fx-font: 25 arial; -fx-base: #18b200;");
+
+        back = new Button("Back");
+        back.setTranslateX(20);
+        back.setTranslateY(Constants.GAME_HEIGHT-70);
+        back.setPrefWidth(120);
+        back.setPrefHeight(30);
+        back.setStyle("-fx-font: 25 arial; -fx-base: #7e0101;");
+
+
 
         //Action Listeners
         nextWeapon.setOnAction(new EventHandler<ActionEvent>()
@@ -110,6 +128,25 @@ public class WeaponSelectionScreen extends Group implements Screen
             }
         });
 
+        selectWeapon.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                weaponManager.setSelectedWeapon(weaponManager.getCurWeapon());
+                switchToWeaponPlacementScreen = true;
+            }
+        });
+
+        back.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                switchToMainMenuScreen = true;
+            }
+        });
+
 
         //ADD TO CANVAS
         getChildren().add(canvas);
@@ -117,15 +154,28 @@ public class WeaponSelectionScreen extends Group implements Screen
         getChildren().add(weaponSpeed);
         getChildren().add(nextWeapon);
         getChildren().add(previousWeapon);
+        getChildren().add(selectWeapon);
+        getChildren().add(back);
 
     }
 
+
+    public boolean isSwitchToMainMenuScreen()
+    {
+        return switchToMainMenuScreen;
+    }
+
+    public boolean isSwitchToWeaponPlacementScreen()
+    {
+        return switchToWeaponPlacementScreen;
+    }
+
     @Override
-    public void Update()
+    public void Update(double dt)
     {
         gc.drawImage(bq, 0, 0);
         gc.drawImage(weaponHolder,0,0);
-        gc.drawImage(weaponManager.getCurWeapon().getPic(),Constants.GAME_WIDTH/2-250,100);
+        gc.drawImage(weaponManager.getCurWeapon().getPic(),Constants.GAME_WIDTH/2-220,100);
 
         weaponName.setText(weaponManager.getCurWeapon().getName());
         weaponSpeed.setText("Bullet Speed: " + weaponManager.getCurWeapon().getSpeed());

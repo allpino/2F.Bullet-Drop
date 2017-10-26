@@ -3,7 +3,7 @@ package com.company;
 
 public class Force extends Sprite
 {
-    int power;
+    double power;
     boolean isUpwards;
     boolean isGravity;
 
@@ -32,7 +32,7 @@ public class Force extends Sprite
         return (int)(Math.random() * range) + min;
     }
 
-    public int getPower()
+    public double getPower()
     {
         return power;
     }
@@ -42,7 +42,7 @@ public class Force extends Sprite
         return isUpwards;
     }
 
-    public void setPower(int power)
+    public void setPower(double power)
     {
         this.power = power;
     }

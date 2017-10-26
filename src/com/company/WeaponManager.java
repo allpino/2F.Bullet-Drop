@@ -8,11 +8,12 @@ public class WeaponManager
     Weapon selectedWeapon;
     Weapon[] weapons;
 
+    int weapPosHeight;
+
     final int NUM_OF_WEAPONS = 4;
 
     public WeaponManager()
     {
-
         selectedWeapon = null;
 
         weapons = new Weapon[NUM_OF_WEAPONS];
@@ -22,6 +23,8 @@ public class WeaponManager
         weapons[3] = new Weapon4();
 
         curWeapon = weapons[0];
+
+        weapPosHeight = 250;
     }
 
     public Weapon getSelectedWeapon()
@@ -75,6 +78,41 @@ public class WeaponManager
         {
             selectedWeapon = wep;
         }
+    }
+
+    public void resetSettings()
+    {
+        if (weapons[0] == null)
+        {
+            throw new AssertionError("Weapon array is empty!");
+        }
+        else
+        {
+            selectedWeapon = null;
+            curWeapon = weapons[0];
+        }
+
+    }
+
+    public void decreaseWeapPosHeight()
+    {
+        if (weapPosHeight < Constants.GAME_HEIGHT- 200)
+        {
+            weapPosHeight++;
+        }
+    }
+
+    public void increaseWeapPosHeight()
+    {
+        if (weapPosHeight > 0 )
+        {
+            weapPosHeight--;
+        }
+    }
+
+    public int getWeapPosHeight()
+    {
+        return weapPosHeight;
     }
 
     public Weapon getCurWeapon()

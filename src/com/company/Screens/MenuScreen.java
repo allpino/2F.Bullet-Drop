@@ -103,7 +103,7 @@ public class MenuScreen extends Group implements Screen
 
     }
 
-    public void Update()
+    public void Update(double dt)
     {
         gc.drawImage(bq, 0, 0);
     }

@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 public class Weapon1 implements Weapon
 {
     Image pic;
-    final int speed = 10; //TODO: Work around with this value
+    final int speed = 1; //TODO: Work around with this value
     final int ID = 1;
     final String name = "Dragunov SVD";
 

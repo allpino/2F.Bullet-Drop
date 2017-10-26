@@ -7,12 +7,15 @@ import javafx.scene.image.Image;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import static com.company.Constants.MAP_WIDTH;
+
 public class Map1 implements Map
 {
     Image bq;
+    Image forceBox;
     Force[] forces;
     int currentLevel;
-    final int mapDifficultyConstant = 50; // TODO: Fix this later by doing test
+    final int mapDifficultyConstant = 1; // TODO: Fix this later by doing test
 
 
     public Map1()
@@ -26,7 +29,20 @@ public class Map1 implements Map
             throw new AssertionError();
         }
 
-        currentLevel = 0;
+        //LOAD FORCE BOX
+        if (Constants.DEBUG)
+        {
+            try
+            {
+                forceBox = new Image(new FileInputStream("src\\com\\company\\resources\\forceBox.png"));
+            } catch (FileNotFoundException ex)
+            {
+                throw new AssertionError();
+            }
+        }
+
+
+        currentLevel = 1; //TODO: Change later
 
         forces = new Force[10];
 
@@ -40,11 +56,20 @@ public class Map1 implements Map
 
             forces[i].setWidthAndHeight(50,Constants.GAME_HEIGHT);
 
-            forces[i].setPower(mapDifficultyConstant + randomWithRange(1,10) );
+            if (forces[i].isUpwards())
+            {
+                forces[i].setPower((mapDifficultyConstant + randomWithRange(1,10)) /20.0 );
+            }
+            else
+            {
+                forces[i].setPower(-((mapDifficultyConstant + randomWithRange(1,10)) /20.0 ) );
+            }
+
+            forces[i].setImage(forceBox);
         }
 
         //Set Gravity
-        forces[9] = new Force(mapDifficultyConstant + 20,true);
+        forces[9] = new Force(mapDifficultyConstant + 1,true); //TODO: FIX GRAVITY LATER
         forces[9].setWidthAndHeight(MAP_WIDTH - Constants.GAME_WIDTH,Constants.GAME_HEIGHT); //Gravity will take
         // place after 1 map width circle
     }

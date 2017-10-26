@@ -29,9 +29,14 @@ public class Sprite
         height = i.getHeight();
     }
 
+    public Image getImage()
+    {
+        return image;
+    }
+
     public void setWidthAndHeight(int width, int height)
     {
-        if (image != null)
+        if (image != null && !Constants.DEBUG)
         {
             throw new AssertionError("You should not set custom width with image uploaded");
         }
@@ -60,15 +65,30 @@ public class Sprite
         velocityY += y;
     }
 
-    public void update(double time)
+    public double getPositionX()
+    {
+        return positionX;
+    }
+
+    public double getPositionY()
+    {
+        return positionY;
+    }
+
+    public void calculatePosition(double time)
     {
         positionX += velocityX * time;
         positionY += velocityY * time;
     }
 
-    public void render(GraphicsContext gc)
+    public double getVelocityX()
     {
-        gc.drawImage( image, positionX, positionY );
+        return velocityX;
+    }
+
+    public double getVelocityY()
+    {
+        return velocityY;
     }
 
     public Rectangle2D getBoundary()

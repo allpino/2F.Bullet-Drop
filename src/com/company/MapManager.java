@@ -3,9 +3,11 @@ package com.company;
 import com.company.Maps.Map;
 import com.company.Maps.Map1;
 
+import java.util.ArrayList;
+
 public class MapManager
 {
-    Map currentMap;
+    private  Map currentMap;
     final int NUM_OF_MAPS = 4;
 
     public MapManager()
@@ -43,9 +45,33 @@ public class MapManager
         //TODO: DO the rest
     }
 
-    public Force[] getCurrentLevelForces()
+    public ArrayList getCurrentLevelForces()
     {
-        return currentMap.getForces();
+        ArrayList<Force> list = new ArrayList<>();
+
+        if (currentMap == null)
+        {
+            throw new AssertionError("Current map is null");
+        }
+        else
+        {
+
+            if (currentMap.getCurrentLevel() == 1)
+            {
+                list.add(currentMap.getForces()[9]);
+            }
+            else if (currentMap.getCurrentLevel() == 2)
+            {
+                for (Force force: currentMap.getForces())
+                {
+                    list.add(force);
+                }
+            }
+            return list;
+        }
+
+
+
     }
 
     int randomWithRange(int min, int max) // for [2,5] write 2,5
