@@ -42,7 +42,7 @@ public class Map1 implements Map
         }
 
 
-        currentLevel = 1; //TODO: Change later
+        currentLevel = 3; //TODO: Change later
 
         forces = new Force[10];
 

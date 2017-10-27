@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class FireScreen extends Group implements Screen
@@ -23,9 +24,12 @@ public class FireScreen extends Group implements Screen
     private Sprite bullet;
     private Image bulletImage;
     private ParallelCamera camera;
+    private boolean inForce;
 
     public FireScreen(Image bq, WeaponManager weaponManager, MapManager mapManager, ParallelCamera camera)
     {
+        inForce = false;
+
         Canvas canvas = new Canvas(Constants.MAP_WIDTH, Constants.GAME_HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
@@ -83,23 +87,30 @@ public class FireScreen extends Group implements Screen
 
         gc.drawImage(bq, 0, 0);
 
-        ArrayList<Force> curLevelForces = mapManager.getCurrentLevelForces();
-        if (!curLevelForces.isEmpty())
+        HashMap<Integer,Force> curLevelForces = mapManager.getCurrentLevelForces();
+        if (curLevelForces != null)
         {
-            Iterator<Force> itr = curLevelForces.iterator();
-
-            while(itr.hasNext())
+            int curForce = 1;
+            if (curLevelForces.size() > 1)
             {
-                Force curForce = itr.next();
-                if (Constants.DEBUG && curForce.getImage() != null)
+                if (Constants.DEBUG && curLevelForces.get(curForce).getImage() != null)
                 {
-                    gc.drawImage(curForce.getImage(), curForce.getPositionX(),0);
+                    gc.drawImage(curLevelForces.get(curForce).getImage(), curLevelForces.get(curForce).getPositionX(),0);
                 }
-                if (bullet.intersects(curForce))
+                if (bullet.intersects(curLevelForces.get(curForce)))
                 {
-                    System.out.println("ADDING POWER: " + curForce.getPower() + " IS UPWARDS: " + curForce.isUpwards());
-                    bullet.addVelocity(0.0,(double) curForce.getPower());
+                    System.out.println("ADDING POWER: " + curLevelForces.get(curForce).getPower() + " IS UPWARDS: " + curLevelForces.get(curForce).isUpwards());
+                    bullet.addVelocity(0.0,(double) curLevelForces.get(curForce).getPower());
                     System.out.println("VELOCITY X:" + bullet.getVelocityX() + " VELOCITY Y: " + bullet.getVelocityY());
+                    inForce = true;
+                }
+                else
+                {
+                    if (inForce)
+                    {
+                        curForce++;
+                    }
+                    inForce = false;
                 }
             }
         }

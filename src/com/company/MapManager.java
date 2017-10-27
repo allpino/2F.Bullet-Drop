@@ -4,6 +4,7 @@ import com.company.Maps.Map;
 import com.company.Maps.Map1;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MapManager
 {
@@ -45,9 +46,9 @@ public class MapManager
         //TODO: DO the rest
     }
 
-    public ArrayList getCurrentLevelForces()
+    public HashMap<Integer,Force> getCurrentLevelForces()
     {
-        ArrayList<Force> list = new ArrayList<>();
+        HashMap<Integer,Force> list = new HashMap<>();
 
         if (currentMap == null)
         {
@@ -55,16 +56,28 @@ public class MapManager
         }
         else
         {
-
-            if (currentMap.getCurrentLevel() == 1)
+            if (currentMap.getCurrentLevel() == 0)
             {
-                list.add(currentMap.getForces()[9]);
+                return null;
+            }
+            else if (currentMap.getCurrentLevel() == 1)
+            {
+                list.put(0,currentMap.getForces()[9]);
             }
             else if (currentMap.getCurrentLevel() == 2)
             {
                 for (Force force: currentMap.getForces())
                 {
-                    list.add(force);
+                    int i = 1;
+                    if (force.isGravity)
+                    {
+                        list.put(0,force);
+                    }
+                    else
+                    {
+                        list.put(i,force);
+                        i++;
+                    }
                 }
             }
             return list;
