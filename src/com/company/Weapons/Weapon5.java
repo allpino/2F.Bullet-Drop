@@ -6,18 +6,18 @@ import javafx.scene.image.Image;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class Weapon4 implements Weapon
+public class Weapon5 implements Weapon
 {
     Image pic;
-    final int speed = 4; //TODO: Work around with this value
-    final int ID = 4;
-    final String name = "Intervention";
+    final int speed = 5; //TODO: Work around with this value
+    final int ID = 5;
+    final String name = "Barrett M82";
 
-    public Weapon4()
+    public Weapon5()
     {
         try
         {
-            pic = new Image(new FileInputStream("src\\com\\company\\resources\\weapons\\4.png"));
+            pic = new Image(new FileInputStream("src\\com\\company\\resources\\weapons\\5.png"));
         } catch (FileNotFoundException ex)
         {
             throw new AssertionError("picture could not be loaded");

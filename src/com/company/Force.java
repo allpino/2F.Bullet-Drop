@@ -4,20 +4,20 @@ package com.company;
 public class Force extends Sprite
 {
     double power;
-    boolean isUpwards;
+    boolean isDownwards;
     boolean isGravity;
 
     public Force()
     {
         power = 0;
-        isUpwards = randomWithRange(0,1) == 0 ? false : true;
+        isDownwards = randomWithRange(0,2) != 0;
         isGravity = false;
     }
 
-    public Force(int pow, boolean isGravity)
+    public Force(double pow, boolean isGravity)
     {
         this.power = pow;
-        this.isUpwards = false;
+        this.isDownwards = false;
         this.isGravity = isGravity;
 
         if (!isGravity)
@@ -37,9 +37,9 @@ public class Force extends Sprite
         return power;
     }
 
-    public boolean isUpwards()
+    public boolean isDownwards()
     {
-        return isUpwards;
+        return isDownwards;
     }
 
     public void setPower(double power)

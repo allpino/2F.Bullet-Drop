@@ -21,11 +21,10 @@ public class SequenceImage
     {
         int index = (int)((time % (frames.length * duration)) / duration);
 
-        if (index < frames.length)
+        if (index < frames.length-1)
         {
             time = time + 0.01;
             return frames[index];
-
 
         }
         else

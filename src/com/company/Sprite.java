@@ -1,7 +1,6 @@
 package com.company;
 
 import javafx.scene.image.Image;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.geometry.Rectangle2D;
 
 public class Sprite
@@ -96,9 +95,20 @@ public class Sprite
         return new Rectangle2D(positionX,positionY,width,height);
     }
 
-    public boolean intersects(Sprite s)
+    public boolean intersectsWithForce(Sprite s)
     {
-        return s.getBoundary().intersects( this.getBoundary() );
+        Rectangle2D force  = s.getBoundary();
+        Rectangle2D bullet = this.getBoundary();
+
+        return force.getMinX() < bullet.getMinX() && force.getMaxX() > bullet.getMaxX();
+    }
+
+    public boolean intersectsWithTarget(Sprite s)
+    {
+        Rectangle2D target = s.getBoundary();
+        Rectangle2D bullet = this.getBoundary();
+
+        return bullet.intersects(target);
     }
 
     public String toString()

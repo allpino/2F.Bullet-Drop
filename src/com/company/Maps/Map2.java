@@ -9,22 +9,22 @@ import java.io.FileNotFoundException;
 
 import static com.company.Constants.MAP_WIDTH;
 
-public class Map1 implements Map
+public class Map2 implements Map
 {
     Image bq;
     Image forceBox;
     Force[] forces;
     int currentLevel;
-    final int mapDifficultyConstant = 1; // TODO: Find good constants to differentiate between maps
-    final int ID = 1;
+    final int mapDifficultyConstant = 2; // TODO: Find good constants to differentiate between maps
+    final int ID = 2;
 
 
-    public Map1()
+    public Map2()
     {
         //LOAD MAP BACKGROUND
         try
         {
-            bq = new Image(new FileInputStream("src\\com\\company\\resources\\maps\\1.jpg"));
+            bq = new Image(new FileInputStream("src\\com\\company\\resources\\maps\\2.jpg"));
         } catch (FileNotFoundException ex)
         {
             throw new AssertionError();
@@ -58,7 +58,7 @@ public class Map1 implements Map
             forces[i] = new Force();
             forces[i].setPosition((double) (Constants.GAME_WIDTH + 100 + i*670),(double)(forces[i].isDownwards() ? 0:
                     Constants
-                    .GAME_HEIGHT));
+                            .GAME_HEIGHT));
 
             if (forces[i].isDownwards())
             {
@@ -77,7 +77,8 @@ public class Map1 implements Map
         //Set Gravity
         //TODO: Make sure gravity is noticable power in each map. Find good value for 200
         forces[9] = new Force(mapDifficultyConstant/200.0,true);
-        forces[9].setWidthAndHeight(MAP_WIDTH - Constants.GAME_WIDTH,Constants.GAME_HEIGHT);
+        forces[9].setWidthAndHeight(MAP_WIDTH - Constants.GAME_WIDTH,Constants.GAME_HEIGHT); //Gravity will take
+        // place after 1 map width circle
     }
 
     public Image getBackground()

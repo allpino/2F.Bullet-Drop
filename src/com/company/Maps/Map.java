@@ -12,5 +12,7 @@ public interface Map
 
     void increaseCurrentLevel();
 
+    int getID();
+
     Force[] getForces();
 }

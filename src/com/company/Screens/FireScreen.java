@@ -9,26 +9,29 @@ import javafx.scene.image.Image;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class FireScreen extends Group implements Screen
 {
     private GraphicsContext gc;
     private Image bq;
     private WeaponManager weaponManager;
-    private MapManager mapManager;
     private boolean switchToResultScreen;
+    private boolean isSuccess;
     private SequenceImage muzzleFlash;
     private Sprite bullet;
-    private Image bulletImage;
+    private Sprite target;
     private ParallelCamera camera;
     private boolean inForce;
+    private boolean inTrackBullet;
+    private int curForce;
+    private HashMap<Integer,Force> curLevelForces;
 
     public FireScreen(Image bq, WeaponManager weaponManager, MapManager mapManager, ParallelCamera camera)
     {
         inForce = false;
+        isSuccess = false;
+        inTrackBullet = false;
 
         Canvas canvas = new Canvas(Constants.MAP_WIDTH, Constants.GAME_HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -40,12 +43,13 @@ public class FireScreen extends Group implements Screen
 
         this.bq = bq;
         this.weaponManager = weaponManager;
-        this.mapManager = mapManager;
         this.camera = camera;
 
+        camera.setTranslateX(0);
+
         muzzleFlash = new SequenceImage();
-        Image[] muzzleFlashFrameArray = new Image[38];
-        for (int i = 0; i < 38; i++)
+        Image[] muzzleFlashFrameArray = new Image[10];
+        for (int i = 0; i < muzzleFlashFrameArray.length; i++)
         {
             try
             {
@@ -58,9 +62,10 @@ public class FireScreen extends Group implements Screen
             }
         }
         muzzleFlash.frames = muzzleFlashFrameArray;
-        muzzleFlash.duration = 0.100;
+        muzzleFlash.duration = 0.200;
 
         bullet = new Sprite();
+        Image bulletImage;
         try
         {
             bulletImage = new Image(new FileInputStream("src\\com\\company\\resources\\bullet2.png"));
@@ -72,6 +77,15 @@ public class FireScreen extends Group implements Screen
         bullet.setImage(bulletImage);
         bullet.setPosition(400,weaponManager.getWeapPosHeight()+85);
         bullet.setVelocity((weaponManager.getCurWeapon().getSpeed())*400,0.0);
+
+
+        target = new Sprite();
+        target.setPosition(weaponManager.getTargetPositionX(),weaponManager.getTargetPositionY());
+        target.setImage(weaponManager.getTargetImage());
+
+
+        curForce = 1;
+        curLevelForces = mapManager.getCurrentLevelForces();
 
 
         //ADD TO CANVAS
@@ -87,52 +101,110 @@ public class FireScreen extends Group implements Screen
 
         gc.drawImage(bq, 0, 0);
 
-        HashMap<Integer,Force> curLevelForces = mapManager.getCurrentLevelForces();
         if (curLevelForces != null)
         {
-            int curForce = 1;
-            if (curLevelForces.size() > 1)
+            if (curLevelForces.size() >= 1)
             {
-                if (Constants.DEBUG && curLevelForces.get(curForce).getImage() != null)
+                if (!curLevelForces.get(0).isGravity())
                 {
-                    gc.drawImage(curLevelForces.get(curForce).getImage(), curLevelForces.get(curForce).getPositionX(),0);
+                    throw new  AssertionError("No gravity force!");
                 }
-                if (bullet.intersects(curLevelForces.get(curForce)))
+
+                if (bullet.intersectsWithForce(curLevelForces.get(0)))
                 {
-                    System.out.println("ADDING POWER: " + curLevelForces.get(curForce).getPower() + " IS UPWARDS: " + curLevelForces.get(curForce).isUpwards());
-                    bullet.addVelocity(0.0,(double) curLevelForces.get(curForce).getPower());
-                    System.out.println("VELOCITY X:" + bullet.getVelocityX() + " VELOCITY Y: " + bullet.getVelocityY());
-                    inForce = true;
+                    System.out.println("IN GRAVITY WITH POWER: " + curLevelForces.get(0).getPower());
+                    bullet.addVelocity(0.0,curLevelForces.get(0).getPower());
                 }
-                else
+
+                if (curForce < curLevelForces.size())
                 {
-                    if (inForce)
+                    if (Constants.DEBUG && curLevelForces.get(curForce).getImage() != null)
                     {
-                        curForce++;
+                        gc.drawImage(curLevelForces.get(curForce).getImage(), curLevelForces.get(curForce).getPositionX(),0);
                     }
-                    inForce = false;
+                    if (bullet.intersectsWithForce(curLevelForces.get(curForce)))
+                    {
+                        System.out.println("ADDING POWER: " + curLevelForces.get(curForce).getPower() + " IS UPWARDS: " + curLevelForces.get(curForce).isDownwards());
+                        bullet.addVelocity(0.0,(double) curLevelForces.get(curForce).getPower());
+                        System.out.println("VELOCITY X:" + bullet.getVelocityX() + " VELOCITY Y: " + bullet.getVelocityY());
+                        inForce = true;
+                    }
+                    else
+                    {
+                        if (inForce)
+                        {
+                            curForce++;
+                        }
+                        inForce = false;
+                    }
                 }
             }
         }
 
         bullet.calculatePosition(dt);
 
-
-
-        gc.drawImage(bulletImage,bullet.getPositionX(), bullet.getPositionY());
-        gc.drawImage(weaponManager.getCurWeapon().getPic(), -5,weaponManager.getWeapPosHeight());
-        gc.drawImage(muzzleFlash.getFrame(),340,weaponManager.getWeapPosHeight()-85);
-
-        if (bullet.getPositionX() < Constants.GAME_WIDTH)
+        if (bullet.intersectsWithTarget(target))
         {
-            camera.setTranslateX(camera.getTranslateX() + ((Constants.GAME_WIDTH - 200) / bullet.getVelocityX()));
+            isSuccess = true;
+            switchToResultScreen = true;
+            System.out.println("HIT!");
+        }
+        else if (bullet.getPositionX() > Constants.MAP_WIDTH || bullet.getPositionY() > Constants.GAME_HEIGHT ||
+                bullet.getPositionY() < 0)
+        {
+            switchToResultScreen = true;
+            System.out.println("NO HIT!");
+        }
+
+        gc.drawImage(target.getImage(),target.getPositionX(),target.getPositionY());
+        gc.drawImage(bullet.getImage(),bullet.getPositionX(), bullet.getPositionY());
+        gc.drawImage(weaponManager.getCurWeapon().getPic(), -5,weaponManager.getWeapPosHeight());
+        if (!muzzleFlash.isAnimationFinished)
+        {
+            gc.drawImage(muzzleFlash.getFrame(),340,weaponManager.getWeapPosHeight()-85);
         }
         else
         {
-            camera.setTranslateX(bullet.getPositionX()-620);
+            System.out.println("animation finished");
         }
 
+        if (inTrackBullet)
+        {
+            if (bullet.getPositionX()>Constants.MAP_WIDTH-(Constants.GAME_WIDTH/2))
+            {
+                camera.setTranslateX(Constants.MAP_WIDTH-Constants.GAME_WIDTH);
+            }
+            else
+            {
+                camera.setTranslateX(bullet.getPositionX()-Constants.GAME_WIDTH/2);
+            }
+        }
+        else
+        {
+            //TODO:Below code smooths out bullet following cam and normal cam. However it looks buggy in high speed
+            // bullets
+            if ((bullet.getPositionX()-Constants.GAME_WIDTH/2) > 0)
+            {
+                if (camera.getTranslateX() < (bullet.getPositionX()
+                        -Constants.GAME_WIDTH/2))
+                {
+                    camera.setTranslateX(camera.getTranslateX() + (bullet.getVelocityX()/1.0)*dt);
+                }
+                else
+                {
+                    inTrackBullet = true;
+                }
+            }
+        }
+    }
 
+    public boolean isSuccess()
+    {
+        return isSuccess;
+    }
 
+    public boolean isSwitchToResultScreen()
+    {
+        return switchToResultScreen;
     }
 }

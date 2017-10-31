@@ -4,6 +4,7 @@ package com.company;
 import com.company.Screens.*;
 import javafx.scene.Group;
 import javafx.scene.ParallelCamera;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 
 
@@ -13,19 +14,21 @@ public class ScreenManager
     Group curScreen;
     Settings settings;
     ParallelCamera camera;
+
     //Screens
     MenuScreen menuScreen;
     SettingsScreen settingsScreen;
     WeaponSelectionScreen weaponSelectionScreen;
     WeaponPlacementScreen weaponPlacementScreen;
     FireScreen fireScreen;
+    ResultScreen resultScreen;
 
     //Managers
     MapManager mapManager;
     WeaponManager weaponManager;
 
 
-    public ScreenManager(Settings settings, MapManager mapManager, WeaponManager weaponManager,ParallelCamera camera)
+    public ScreenManager(Settings settings, MapManager mapManager, WeaponManager weaponManager, ParallelCamera camera)
     {
 
         menuScreen = new MenuScreen();
@@ -42,7 +45,6 @@ public class ScreenManager
             this.weaponManager = weaponManager;
             this.camera = camera;
         }
-
     }
 
     public void setCurScreen(Group screen)
@@ -68,7 +70,8 @@ public class ScreenManager
             }
             else if(((MenuScreen) curScreen).isSwitchToNewGameScreen())
             {
-                mapManager.setCurrentMap(1);
+                mapManager.resetSettings();
+                weaponManager.resetSettings();
                 Image bq = mapManager.getCurrentMap().getBackground();
 
                 weaponSelectionScreen = new WeaponSelectionScreen(bq,weaponManager);
@@ -107,7 +110,7 @@ public class ScreenManager
                 setCurScreen(weaponPlacementScreen);
                 weaponSelectionScreen = null;
             }
-        }
+        }//WEAPON PLACEMENT SCREEN ALTERNATIONS
         else if(curScreen instanceof WeaponPlacementScreen)
         {
             if (((WeaponPlacementScreen) curScreen).isSwitchToFireScreen())
@@ -116,11 +119,47 @@ public class ScreenManager
                 setCurScreen(fireScreen);
                 weaponPlacementScreen = null;
             }
+        }//FIRE SCREEN ALTERNATIONS
+        else if(curScreen instanceof FireScreen)
+        {
+            if (((FireScreen) curScreen).isSwitchToResultScreen())
+            {
+                resultScreen = new ResultScreen(mapManager.getCurrentMap().getBackground(),((FireScreen) curScreen)
+                        .isSuccess(),mapManager,camera,weaponManager);
+                setCurScreen(resultScreen);
+                weaponPlacementScreen = null;
+            }
+        }//RESULT SCREEN ALTERNATIONS
+        else if(curScreen instanceof ResultScreen)
+        {
+            if (((ResultScreen) curScreen).isSwitchToMainMenuScreen())
+            {
+                menuScreen = new MenuScreen();
+                setCurScreen(menuScreen);
+                weaponManager.resetSettings();
+                mapManager.resetSettings();
+                resultScreen = null;
+            }
+            else if (((ResultScreen) curScreen).isSwitchToWeaponSelectionScreen())
+            {
+                weaponManager.resetSettings();
+                weaponSelectionScreen = new WeaponSelectionScreen(mapManager.getCurrentMap().getBackground(),
+                        weaponManager);
+                setCurScreen(weaponSelectionScreen);
+                resultScreen = null;
+            }
+            else if (((ResultScreen) curScreen).isSwitchToWeaponPlacementScreen())
+            {
+                weaponPlacementScreen = new WeaponPlacementScreen(mapManager.getCurrentMap().getBackground(),
+                        weaponManager);
+                setCurScreen(weaponPlacementScreen);
+                resultScreen = null;
+            }
         }
-
 
         //Keep this at the bottom
         ((Screen)curScreen).Update(dt);
     }
+
 
 }

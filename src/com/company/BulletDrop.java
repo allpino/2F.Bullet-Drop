@@ -6,6 +6,8 @@ import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.security.AccessControlException;
+
 public class BulletDrop extends Application
 {
 
@@ -34,13 +36,20 @@ public class BulletDrop extends Application
         primaryStage.setTitle("Bullet Drop v.01");
 
         Scene theScene = new Scene(screenManager.getCurScreen());
+
+        try {
+            System.setProperty("prism.verbose", "true");
+            System.setProperty("prism.dirtyopts", "false");
+            System.setProperty("javafx.animation.pulse", "10");
+        } catch (AccessControlException e) {}
+
+
         theScene.setCamera(camera);
         primaryStage.setScene(theScene);
 
         primaryStage.show();
 
         LongValue lastNanoTime = new LongValue(System.nanoTime());
-
 
         new AnimationTimer()
         {
@@ -53,6 +62,7 @@ public class BulletDrop extends Application
                 screenManager.Update(elapsedTime);
 
                 theScene.setRoot(screenManager.getCurScreen());
+
                 primaryStage.setScene(theScene);
 
             }

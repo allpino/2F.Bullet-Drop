@@ -1,19 +1,18 @@
 package com.company;
 
-import com.company.Maps.Map;
-import com.company.Maps.Map1;
+import com.company.Maps.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapManager
 {
     private  Map currentMap;
     final int NUM_OF_MAPS = 4;
+    final int NUM_OF_LEVELS = 3;
 
     public MapManager()
     {
-        currentMap = null;
+        setCurrentMap(1);
     }
 
     public Map getCurrentMap()
@@ -43,7 +42,25 @@ public class MapManager
             Map1 map1 = new Map1();
             currentMap = map1;
         }
-        //TODO: DO the rest
+        else if (map == 2)
+        {
+            Map2 map2 = new Map2();
+            currentMap = map2;
+        }
+        else if (map == 3)
+        {
+            Map3 map3 = new Map3();
+            currentMap = map3;
+        }
+        else if (map == 4)
+        {
+            Map4 map4 = new Map4();
+            currentMap = map4;
+        }
+        else
+        {
+            throw new AssertionError("Wrong map number!");
+        }
     }
 
     public HashMap<Integer,Force> getCurrentLevelForces()
@@ -56,28 +73,29 @@ public class MapManager
         }
         else
         {
-            if (currentMap.getCurrentLevel() == 0)
+            if (currentMap.getCurrentLevel() == 1)
             {
                 return null;
             }
-            else if (currentMap.getCurrentLevel() == 1)
+            else if (currentMap.getCurrentLevel() == 2)
             {
                 list.put(0,currentMap.getForces()[9]);
             }
-            else if (currentMap.getCurrentLevel() == 2)
+            else if (currentMap.getCurrentLevel() == 3)
             {
-                for (Force force: currentMap.getForces())
+                Force[] force = currentMap.getForces();
+                for (int i = 0; i < force.length-1; i++)
                 {
-                    int i = 1;
-                    if (force.isGravity)
-                    {
-                        list.put(0,force);
-                    }
-                    else
-                    {
-                        list.put(i,force);
-                        i++;
-                    }
+                    list.put(i+1,force[i]);
+
+                }
+                if (force[9].isGravity)
+                {
+                    list.put(0,force[9]);
+                }
+                else
+                {
+                    throw new AssertionError("No gravity in level 3");
                 }
             }
             return list;
@@ -86,6 +104,21 @@ public class MapManager
 
 
     }
+
+    public int getNumOfMaps()
+    {
+        return NUM_OF_MAPS;
+    }
+
+    public void resetSettings()
+    {
+        if (currentMap.getID() != 1)
+        {
+            setCurrentMap(1);
+        }
+    }
+
+    public int getNumOfLevels(){return NUM_OF_LEVELS;}
 
     int randomWithRange(int min, int max) // for [2,5] write 2,5
     {
