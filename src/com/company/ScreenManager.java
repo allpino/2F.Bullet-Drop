@@ -4,7 +4,6 @@ package com.company;
 import com.company.Screens.*;
 import javafx.scene.Group;
 import javafx.scene.ParallelCamera;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 
 

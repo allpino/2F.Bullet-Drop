@@ -20,19 +20,10 @@ public class MapManager
         return currentMap;
     }
 
-    public Map createRandomMap()
+    public void createRandomMap()
     {
         int rand = randomWithRange(1,NUM_OF_MAPS);
-        if (rand == 1)
-        {
-            Map1 map1 = new Map1();
-            currentMap = map1;
-            return currentMap;
-        }//TODO: Do the rest
-        else
-        {
-            return currentMap;
-        }
+        setCurrentMap(rand);
     }
 
     public void setCurrentMap(int map)
