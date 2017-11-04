@@ -21,4 +21,5 @@ Bullet Drop is a 2D shooting game for desktop where the player will try to shoot
 
 Jar File Download Link
 https://drive.google.com/file/d/1JJVQ9oLQtFNPuoCRY7eTqW0uGdHs_TGg/view?usp=sharing
+
 Put it in main directory of the game(where readme file is) for succesfull recourse matching.
