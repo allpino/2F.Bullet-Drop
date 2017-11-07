@@ -112,7 +112,8 @@ public class WeaponManager
             curWeapon = weapons[0];
 
             targetPositionX = Constants.MAP_WIDTH-targetImage.getWidth();
-            targetPositionY = (double)randomWithRange(0,Constants.GAME_HEIGHT - (int)targetImage.getHeight());
+            targetPositionY = (double)randomWithRange((int)targetImage.getHeight(),Constants.GAME_HEIGHT  - (int)targetImage
+                    .getHeight());
         }
     }
 

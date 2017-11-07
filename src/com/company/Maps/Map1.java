@@ -63,11 +63,11 @@ public class Map1 implements Map
             if (forces[i].isDownwards())
             {
                 //TODO: Maybe to find good balance change 10 or 20 or both and same with negative force
-                forces[i].setPower(-((mapDifficultyConstant + randomWithRange(1,10)) /20.0 ));
+                forces[i].setPower(-((mapDifficultyConstant + randomWithRange(1,10)) /10.0 ));
             }
             else
             {
-                forces[i].setPower(+((mapDifficultyConstant + randomWithRange(1,10)) /20.0 ) );
+                forces[i].setPower(+((mapDifficultyConstant + randomWithRange(1,10)) /10.0 ) );
             }
 
             forces[i].setImage(forceBox);
@@ -76,7 +76,7 @@ public class Map1 implements Map
 
         //Set Gravity
         //TODO: Make sure gravity is noticable power in each map. Find good value for 200
-        forces[9] = new Force(mapDifficultyConstant/200.0,true);
+        forces[9] = new Force(mapDifficultyConstant/150.0,true);
         forces[9].setWidthAndHeight(MAP_WIDTH - Constants.GAME_WIDTH,Constants.GAME_HEIGHT);
     }
 

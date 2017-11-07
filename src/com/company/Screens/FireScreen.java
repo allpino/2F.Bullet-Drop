@@ -163,10 +163,6 @@ public class FireScreen extends Group implements Screen
         {
             gc.drawImage(muzzleFlash.getFrame(),340,weaponManager.getWeapPosHeight()-85);
         }
-        else
-        {
-            System.out.println("animation finished");
-        }
 
         if (inTrackBullet)
         {
