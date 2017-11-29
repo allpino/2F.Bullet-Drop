@@ -5,6 +5,11 @@ import com.company.Screens.*;
 import javafx.scene.Group;
 import javafx.scene.ParallelCamera;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+
+import java.io.File;
 
 
 public class ScreenManager
@@ -26,6 +31,13 @@ public class ScreenManager
     MapManager mapManager;
     WeaponManager weaponManager;
 
+    //Sounds
+    MediaPlayer bqMusic;
+    MediaPlayer fireScreenTension;
+    MediaPlayer rifleShot;
+    MediaPlayer success;
+    MediaPlayer failure;
+
 
     public ScreenManager(Settings settings, MapManager mapManager, WeaponManager weaponManager, ParallelCamera camera)
     {
@@ -44,6 +56,33 @@ public class ScreenManager
             this.weaponManager = weaponManager;
             this.camera = camera;
         }
+
+        String bqMusic = "src\\com\\company\\resources\\bq_music.wav";
+        Media bqMusicMedia = new Media((new File(bqMusic).toURI().toString()));
+        this.bqMusic = new MediaPlayer(bqMusicMedia);
+        this.bqMusic.setOnEndOfMedia(new Runnable() {
+            public void run() {
+                ScreenManager.this.bqMusic.seek(Duration.ZERO);
+            }
+        });
+        this.bqMusic.play();
+
+        String fireScreenTension = "src\\com\\company\\resources\\firescreen_tension.mp3";
+        Media fireScreenTensionMedia = new Media((new File(fireScreenTension).toURI().toString()));
+        this.fireScreenTension = new MediaPlayer(fireScreenTensionMedia);
+
+        String rifleShot = "src\\com\\company\\resources\\rifleshot.wav";
+        Media rifleShotMedia = new Media((new File(rifleShot).toURI().toString()));
+        this.rifleShot = new MediaPlayer(rifleShotMedia);
+
+        String success = "src\\com\\company\\resources\\success.wav";
+        Media successMedia = new Media((new File(success).toURI().toString()));
+        this.success = new MediaPlayer(successMedia);
+
+        String failure = "src\\com\\company\\resources\\failure.wav";
+        Media failureMedia = new Media((new File(failure).toURI().toString()));
+        this.failure = new MediaPlayer(failureMedia);
+
     }
 
     public void setCurScreen(Group screen)
@@ -117,6 +156,13 @@ public class ScreenManager
                 fireScreen = new FireScreen(mapManager.getCurrentMap().getBackground(),weaponManager,mapManager,camera);
                 setCurScreen(fireScreen);
                 weaponPlacementScreen = null;
+                bqMusic.stop();
+
+                rifleShot.seek(Duration.ZERO);
+                rifleShot.play();
+
+                fireScreenTension.seek(Duration.ZERO);
+                fireScreenTension.play();
             }
         }//FIRE SCREEN ALTERNATIONS
         else if(curScreen instanceof FireScreen)
@@ -127,6 +173,19 @@ public class ScreenManager
                         .isSuccess(),mapManager,camera,weaponManager);
                 setCurScreen(resultScreen);
                 weaponPlacementScreen = null;
+
+                fireScreenTension.stop();
+
+                if (resultScreen.isSuccess())
+                {
+                    success.seek(Duration.ZERO);
+                    success.play();
+                }
+                else
+                {
+                    failure.seek(Duration.ZERO);
+                    failure.play();
+                }
             }
         }//RESULT SCREEN ALTERNATIONS
         else if(curScreen instanceof ResultScreen)
@@ -138,6 +197,9 @@ public class ScreenManager
                 weaponManager.resetSettings();
                 mapManager.resetSettings();
                 resultScreen = null;
+
+                bqMusic.seek(Duration.ZERO);
+                bqMusic.play();
             }
             else if (((ResultScreen) curScreen).isSwitchToWeaponSelectionScreen())
             {
@@ -146,6 +208,9 @@ public class ScreenManager
                         weaponManager);
                 setCurScreen(weaponSelectionScreen);
                 resultScreen = null;
+
+                bqMusic.seek(Duration.ZERO);
+                bqMusic.play();
             }
             else if (((ResultScreen) curScreen).isSwitchToWeaponPlacementScreen())
             {
@@ -153,11 +218,18 @@ public class ScreenManager
                         weaponManager);
                 setCurScreen(weaponPlacementScreen);
                 resultScreen = null;
+
+                bqMusic.seek(Duration.ZERO);
+                bqMusic.play();
             }
         }
 
         //Keep this at the bottom
         ((Screen)curScreen).Update(dt);
+
+
+        //Mediaplayer settingss
+        bqMusic.setMute(!settings.isSfxOn);
     }
 
 

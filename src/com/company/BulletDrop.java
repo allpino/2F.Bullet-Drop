@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.security.AccessControlException;
@@ -12,7 +13,6 @@ public class BulletDrop extends Application
 {
 
     Settings settings;
-
 
     public static void main(String[] args)
     {

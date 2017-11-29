@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.Weapons.*;
 import javafx.scene.image.Image;
 
 import java.io.FileInputStream;
@@ -24,11 +23,11 @@ public class WeaponManager
         selectedWeapon = null;
 
         weapons = new Weapon[NUM_OF_WEAPONS];
-        weapons[0] = new Weapon1();
-        weapons[1] = new Weapon2();
-        weapons[2] = new Weapon3();
-        weapons[3] = new Weapon4();
-        weapons[4] = new Weapon5();
+        weapons[0] = new Weapon("Dragunov SVD",1,1);
+        weapons[1] = new Weapon("M40A3",2,2);
+        weapons[2] = new Weapon("R700",3,3);
+        weapons[3] = new Weapon("Intervention",4,4);
+        weapons[4] = new Weapon("Barrett M82",5,5);
 
         curWeapon = weapons[0];
 
