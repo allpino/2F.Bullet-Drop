@@ -230,6 +230,10 @@ public class ScreenManager
 
         //Mediaplayer settingss
         bqMusic.setMute(!settings.isSfxOn);
+        rifleShot.setMute(!settings.isSfxOn);
+        fireScreenTension.setMute(!settings.isSfxOn);
+        success.setMute(!settings.isSfxOn);
+        failure.setMute(!settings.isSfxOn);
     }
 
 
