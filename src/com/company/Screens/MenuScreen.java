@@ -20,15 +20,19 @@ public class MenuScreen extends Group implements Screen
     private Button newGame;
     private Button settings;
     private Button exit;
+    private Button credits;
 
     private boolean switchToNewGameScreen;
     private boolean switchTosettingsScreen;
+    private boolean switchToMainMenuScreen;
+
 
     public MenuScreen()
     {
 
         switchToNewGameScreen = false;
         switchTosettingsScreen = false;
+        switchToMainMenuScreen = false;
 
         Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         gc = canvas.getGraphicsContext2D();
@@ -57,10 +61,17 @@ public class MenuScreen extends Group implements Screen
         settings.setPrefHeight(70);
         settings.setPrefWidth(200);
         settings.setStyle("-fx-font: 30 arial; -fx-base: #ee2211;");
+        
+        credits = new Button("Credits");
+        credits.setTranslateX(900);
+        credits.setTranslateY(310);
+        credits.setPrefHeight(70);
+        credits.setPrefWidth(200);
+        credits.setStyle("-fx-font: 30 arial; -fx-base: #ee2211;");
 
         exit = new Button("Exit");
         exit.setTranslateX(900);
-        exit.setTranslateY(310);
+        exit.setTranslateY(390);
         exit.setPrefHeight(70);
         exit.setPrefWidth(200);
         exit.setStyle("-fx-font: 30 arial; -fx-base: #ee2211;");
@@ -84,7 +95,15 @@ public class MenuScreen extends Group implements Screen
             }
         });
 
-
+        credits.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+            	switchToMainMenuScreen = true;
+            }
+        });
+        
         exit.setOnAction(new EventHandler<ActionEvent>()
         {
             @Override
@@ -93,12 +112,15 @@ public class MenuScreen extends Group implements Screen
                 Runtime.getRuntime().exit(0);
             }
         });
+        
+        
 
 
         //ADD TO CANVAS
         getChildren().add(canvas);
         getChildren().add(newGame);
         getChildren().add(settings);
+        getChildren().add(credits);
         getChildren().add(exit);
 
     }
@@ -118,5 +140,8 @@ public class MenuScreen extends Group implements Screen
     {
         return switchTosettingsScreen;
     }
-
+    
+    public boolean isSwitchToMainMenuScreen() {
+    	return switchToMainMenuScreen;
+    }
 }
