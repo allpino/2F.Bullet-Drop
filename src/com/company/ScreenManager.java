@@ -26,6 +26,8 @@ public class ScreenManager
     WeaponPlacementScreen weaponPlacementScreen;
     FireScreen fireScreen;
     ResultScreen resultScreen;
+    HowToPlayScreen howToPlayScreen;
+    CreditsScreen creditsScreen;
 
     //Managers
     MapManager mapManager;
@@ -118,6 +120,17 @@ public class ScreenManager
 
 
             }
+            else if(((MenuScreen) curScreen).isSwitchToMainMenuScreen())
+            {
+            	creditsScreen = new CreditsScreen();
+            	setCurScreen(creditsScreen);
+            	menuScreen = null;
+            	
+                
+
+
+            }
+            
         } // SETTINGS SCREEN ALTERNATIONS
         else if(curScreen instanceof SettingsScreen)
         {
@@ -130,6 +143,10 @@ public class ScreenManager
             else if(((SettingsScreen) curScreen).isSwitchToHowToPlayScreen())
             {
                 //TODO: switch to how to play screen
+            	howToPlayScreen = new HowToPlayScreen();
+            	setCurScreen(howToPlayScreen);
+            	settingsScreen = null;
+            	
             }
         } // WEAPON SELECTION SCREEN ALTERNATIONS
         else if(curScreen instanceof WeaponSelectionScreen)
@@ -221,6 +238,24 @@ public class ScreenManager
 
                 bqMusic.seek(Duration.ZERO);
                 bqMusic.play();
+            }
+        }//HOWTOPLAY SCREEN ALTERNATIONS
+        else if(curScreen instanceof HowToPlayScreen)
+        {
+            if (((HowToPlayScreen) curScreen).isSwitchToSettingsScreen())
+            {
+            	settingsScreen = new SettingsScreen(settings);
+                setCurScreen(settingsScreen);
+                howToPlayScreen = null;
+            }
+        }//CREDITS SCREEN ALTERNATIONS
+        else if(curScreen instanceof CreditsScreen)
+        {
+            if (((CreditsScreen) curScreen).isSwitchToMainMenuScreen())
+            {
+            	menuScreen = new MenuScreen();
+                setCurScreen(menuScreen);
+                creditsScreen = null;
             }
         }
 
