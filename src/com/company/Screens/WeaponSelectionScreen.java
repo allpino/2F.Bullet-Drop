@@ -181,6 +181,5 @@ public class WeaponSelectionScreen extends Group implements Screen
         weaponSpeed.setText("Bullet Speed: " + weaponManager.getCurWeapon().getSpeed());
 
 
-
     }
 }

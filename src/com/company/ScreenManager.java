@@ -117,18 +117,12 @@ public class ScreenManager
                 weaponSelectionScreen = new WeaponSelectionScreen(bq,weaponManager);
                 setCurScreen(weaponSelectionScreen);
                 menuScreen = null;
-
-
             }
             else if(((MenuScreen) curScreen).isSwitchToMainMenuScreen())
             {
             	creditsScreen = new CreditsScreen();
             	setCurScreen(creditsScreen);
             	menuScreen = null;
-            	
-                
-
-
             }
             
         } // SETTINGS SCREEN ALTERNATIONS
@@ -142,7 +136,6 @@ public class ScreenManager
             }
             else if(((SettingsScreen) curScreen).isSwitchToHowToPlayScreen())
             {
-                //TODO: switch to how to play screen
             	howToPlayScreen = new HowToPlayScreen();
             	setCurScreen(howToPlayScreen);
             	settingsScreen = null;
