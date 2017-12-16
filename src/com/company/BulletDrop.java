@@ -33,7 +33,7 @@ public class BulletDrop extends Application
         WeaponManager weaponManager = new WeaponManager();
         ScreenManager screenManager = new ScreenManager(settings,mapManager,weaponManager,camera);
 
-        primaryStage.setTitle("Bullet Drop v.01");
+        primaryStage.setTitle("Bullet Drop v1.0");
 
         Scene theScene = new Scene(screenManager.getCurScreen());
 
